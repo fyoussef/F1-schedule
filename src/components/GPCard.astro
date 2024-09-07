@@ -1,0 +1,36 @@
+---
+import { format } from 'date-fns';
+import { ptBR } from 'date-fns/locale'
+import type { GPDataOutput } from '../pages/index.astro';
+import { Icon } from 'astro-icon/components'
+import { translateCountry } from '../utils/translate-country';
+
+type Props = {
+  item: GPDataOutput
+}
+
+const { item } = Astro.props;
+
+---
+
+<div class="grid grid-cols-[4rem,auto,4rem] gap-3">
+  <div class="w-16 flex flex-col items-center justify-center font-semibold text-xl text-white bg-gradient-to-br from-indigo-400 to-indigo-600 rounded-md">
+    <p>{item.firstDayOfEvent && format(new Date(item.firstDayOfEvent), 'dd', { locale: ptBR })}</p>
+    <p class="uppercase">{item.firstDayOfEvent && format(new Date(item.firstDayOfEvent), 'LLL', { locale: ptBR })}</p>
+  </div>
+  <div class="grid">
+    <h3 class="text-2xl font-semibold">{translateCountry(item.gp)}</h3>
+    <div class="flex flex-wrap gap-1.5">
+      {
+        [...new Set(
+            item
+            .events
+            .map((event) => format(new Date(event.start_at), 'dd LLL', { locale: ptBR })))
+        ]
+          .map((event) => (<span class="px-1.5 rounded-md font-semibold text-white bg-violet-400">{event}</span>))
+          .slice(1, item.events.length)
+      }
+    </div>
+  </div>
+  {new Date(item.lastDayOfEvent).getTime() < new Date().getTime() ? <Icon name="maki:racetrack" class="w-16 h-16" />: <Icon name="twemoji:alarm-clock" class="w-14 h-14" />}
+</div>
