@@ -51,7 +51,7 @@ const nextGp = output.find(item => new Date(item.firstDayOfEvent).getTime() >= D
 		</div>
 		<section class="grid gap-3">
 			{
-				output.map((item, pos) => (
+				output.map((item) => (
 					<GPCardAstro item={item} />
 					<Fragment>{item.show && <diV class="w-full h-[1px] bg-zinc-300" />}</Fragment>
 				))
